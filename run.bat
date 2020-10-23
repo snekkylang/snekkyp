@@ -1,0 +1,1 @@
+haxe -cp src --main SnekkyD --run SnekkyD input.bite --debug
