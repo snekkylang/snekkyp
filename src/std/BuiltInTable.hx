@@ -5,7 +5,10 @@ class BuiltInTable {
     static final namespaces = [
         "Sys",
         "Math",
-        "String",
+        "Number",
+        "Object",
+        "Range",
+        "Regex",
         "File",
         "Http"
     ]; 
