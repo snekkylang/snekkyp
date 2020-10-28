@@ -1,12 +1,19 @@
+import haxe.io.Bytes;
 import parser.Parser;
-import sys.io.File;
 
+@:expose
 class SnekkyD {
 
+    public static function disassemble(byteCode:Bytes, debug:Bool) {
+        final parser = new Parser(byteCode, debug);
+        parser.parse();   
+    }
+
     public static function main() {
+        #if target.sys
         final debug = Sys.args().contains("--debug");
-        final code = File.getBytes(Sys.args()[0]);
-        final parser = new Parser(code, debug);
-        parser.parse();
+        final code = sys.io.File.getBytes(Sys.args()[0]);
+        disassemble(code, debug);
+        #end
     }
 }

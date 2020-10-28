@@ -56,16 +56,25 @@ class Parser {
 
         for (i => ins in parsedInstructions) {
             final insCount = StringTools.lpad(Std.string(i), "0", insCountMaxLength);
-            Sys.print(insCount);
-            Sys.print(" | ");
-            Sys.print(StringTools.lpad(Std.string(ins.bytePosition), "0", posCountMaxLength));
-            Sys.print(" | ");
+            final info = new StringBuf();
+            info.add(insCount);
+            info.add(" | ");
+            info.add(StringTools.lpad(Std.string(ins.bytePosition), "0", posCountMaxLength));
+            info.add(" | ");
             if (debug) {
-                Sys.print(StringTools.rpad(fileInfo[i], " ", fileInfoMaxLength));
-                Sys.print(" | ");
+                info.add(StringTools.rpad(fileInfo[i], " ", fileInfoMaxLength));
+                info.add(" | ");
             }
-            Sys.println(ins);
+            println('$info$ins');
         }
+    }
+
+    inline function println(message:String) {
+        #if target.sys
+        Sys.println(message);
+        #else
+        js.Browser.console.log(message);
+        #end
     }
 
     function parseInstruction() {

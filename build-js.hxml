@@ -1,0 +1,5 @@
+-cp src
+-main SnekkyD
+-js js/snekkyd.js
+-lib console.hx
+-lib equals
