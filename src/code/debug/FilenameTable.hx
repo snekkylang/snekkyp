@@ -30,7 +30,7 @@ class FilenameTable {
             }
         }
 
-        return prev.filename;
+        return prev == null ? null : prev.filename;
     }
 
     public function fromByteCode(byteCode:BytesInput):FilenameTable {
