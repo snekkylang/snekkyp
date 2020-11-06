@@ -5,7 +5,7 @@ import instruction.*;
 import code.OpCode;
 import object.Object;
 import code.constant.ConstantPool;
-import code.debug.LocalVariableTable;
+import code.debug.VariableTable;
 import code.debug.LineNumberTable;
 import code.debug.FilenameTable;
 import haxe.zip.Uncompress;
@@ -17,7 +17,7 @@ class Parser {
     final debug:Bool;
     final filenameTable:FilenameTable;
     final lineNumberTable:LineNumberTable;
-    final localVariableTable:LocalVariableTable;
+    final variableTable:VariableTable;
     final constantPool:Array<Object>;
     final instructions:BytesInput;
     final parsedInstructions:Array<Instruction> = [];
@@ -33,7 +33,7 @@ class Parser {
         }
         filenameTable = new FilenameTable().fromByteCode(byteCode);
         lineNumberTable = new LineNumberTable().fromByteCode(byteCode);
-        localVariableTable = new LocalVariableTable().fromByteCode(byteCode);
+        variableTable = new VariableTable().fromByteCode(byteCode);
         constantPool = ConstantPool.fromByteCode(byteCode);
         instructions = new BytesInput(byteCode.read(byteCode.readInt32()));
 
@@ -120,12 +120,15 @@ class Parser {
             case OpCode.ConcatString: new ConcatStringIns(position);
             case OpCode.Load:
                 final index = instructions.readInt32();
+                final name = variableNames[index];
 
-                new LoadIns(index, position);
+                new LoadIns(index, name, position);
             case OpCode.Store:
                 final index = instructions.readInt32();
+                final name = variableTable.resolve(instructions.position);
+                variableNames[index] = name;
 
-                new StoreIns(index, position);
+                new StoreIns(index, name, position);
             case OpCode.LoadBuiltIn:
                 final index = instructions.readInt32();
                 final name = BuiltInTable.resolveName(index);
