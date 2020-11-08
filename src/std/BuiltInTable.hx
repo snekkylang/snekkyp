@@ -10,7 +10,8 @@ class BuiltInTable {
         "Range",
         "Regex",
         "File",
-        "Http"
+        "Http",
+        "Thread"
     ]; 
 
     public static function resolveName(index:Int):String {
