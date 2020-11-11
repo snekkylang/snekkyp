@@ -9,6 +9,7 @@ class BuiltInTable {
         "Object",
         "Range",
         "Regex",
+        "Json",
         "File",
         "Http",
         "Thread"
