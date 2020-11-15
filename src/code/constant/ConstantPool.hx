@@ -27,6 +27,9 @@ class ConstantPool {
                     pool.push(Object.UserFunction(position, parametersCount));
                 case ConstantType.Null:
                     pool.push(Object.Null);
+                case ConstantType.Boolean:
+                    final value = byteCode.readByte();
+                    pool.push(Object.Boolean(value != 0));
                 default:
             }    
         }

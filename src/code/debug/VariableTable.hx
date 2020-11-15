@@ -1,8 +1,6 @@
 package code.debug;
 
 import haxe.io.BytesInput;
-import haxe.io.Bytes;
-import haxe.io.BytesOutput;
 
 private typedef VariableEntry = {start:Int, end:Int, name:String};
 
@@ -33,23 +31,6 @@ class VariableTable {
         }
 
         return prev == null ? null : prev.name;
-    }
-
-    public function toByteCode():Bytes {
-        final tableBytes = new BytesOutput();
-
-        for (entry in table) {
-            tableBytes.writeInt32(entry.start);
-            tableBytes.writeInt32(entry.end);
-            tableBytes.writeInt32(Bytes.ofString(entry.name).length);
-            tableBytes.writeString(entry.name);
-        }
-
-        final output = new BytesOutput();
-        output.writeInt32(tableBytes.length);
-        output.write(tableBytes.getBytes());
-
-        return output.getBytes();
     }
 
     public function fromByteCode(byteCode:BytesInput):VariableTable {

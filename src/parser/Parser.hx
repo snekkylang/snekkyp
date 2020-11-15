@@ -111,6 +111,12 @@ class Parser {
             case OpCode.Subtract: new SubtractIns(position);
             case OpCode.Multiply: new MultiplyIns(position);
             case OpCode.Divide: new DivideIns(position);
+            case OpCode.BitAnd: new BitAndIns(position);
+            case OpCode.BitOr: new BitOrIns(position);
+            case OpCode.BitXor: new BitXorIns(position);
+            case OpCode.BitShiftLeft: new BitShiftLeftIns(position);
+            case OpCode.BitShiftRight: new BitShiftRightIns(position);
+            case OpCode.BitNot: new BitNotIns(position);
             case OpCode.Modulo: new ModuloIns(position);
             case OpCode.Equals: new EqualsIns(position);
             case OpCode.LessThan: new LessThanIns(position);
@@ -153,7 +159,6 @@ class Parser {
                 final index = instructions.readInt32();
                 new DestructureArrayIns(index, position);
             case OpCode.DestructureHash: new DestructureHashIns(position);
-
             default: trace('Unknown OpCode `$opCode`'); new Instruction("unknown", position);
         }
 
