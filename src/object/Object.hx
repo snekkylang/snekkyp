@@ -10,4 +10,5 @@ enum Object {
     Array(values:Array<Object>);
     Hash(values:StringMap<Object>);
     Null;
+    Boolean(value:Bool);
 }
