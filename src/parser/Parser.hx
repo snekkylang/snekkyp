@@ -131,7 +131,11 @@ class Parser {
                 new LoadIns(index, name, position);
             case OpCode.Store:
                 final index = instructions.readInt32();
-                final name = variableTable.resolve(instructions.position);
+                var name = variableTable.resolve(instructions.position);
+                if (name == null) {
+                    name = "<internal>";
+                }
+
                 variableNames[index] = name;
 
                 new StoreIns(index, name, position);
