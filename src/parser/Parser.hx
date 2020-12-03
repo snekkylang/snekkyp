@@ -159,10 +159,6 @@ class Parser {
                 new HashIns(size, position);
             case OpCode.LoadIndex: new LoadIndexIns(position);
             case OpCode.StoreIndex: new StoreIndexIns(position);
-            case OpCode.DestructureArray: 
-                final index = instructions.readInt32();
-                new DestructureArrayIns(index, position);
-            case OpCode.DestructureHash: new DestructureHashIns(position);
             default: trace('Unknown OpCode `$opCode`'); new Instruction("unknown", position);
         }
 
