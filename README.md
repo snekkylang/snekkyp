@@ -3,11 +3,11 @@
 A tool which can be used to disassemble Snekky bytecode files (`.bite` extension).
 
 ## Installation
-Download the latest version for your operating system of choice from the [releases page](https://github.com/snekkylang/snekkyd/releases) or the latest build from the [actions tab](https://github.com/snekkylang/snekkyd/action).
+Download the latest version for your operating system of choice from the [releases page](https://github.com/snekkylang/snekkyp/releases) or the latest build from the [actions tab](https://github.com/snekkylang/snekkyp/action).
 
 ## Usage
 ```
-snekkyd <input> <options>
+snekkyp <input> <options>
 ```
 
 ### Options

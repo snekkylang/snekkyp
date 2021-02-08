@@ -2,7 +2,7 @@ import haxe.io.Bytes;
 import parser.Parser;
 
 @:expose
-class SnekkyD {
+class SnekkyP {
 
     public static function disassemble(byteCode:Bytes, debug:Bool) {
         final parser = new Parser(byteCode, debug);

@@ -1,4 +1,4 @@
-name: snekkyd
+name: snekkyp
 
 on: [push]
 
@@ -16,12 +16,12 @@ jobs:
       - name: Build
         run: haxe build.hxml
       - name: Rename artifact
-        run: mv cpp/SnekkyD cpp/snekkyd
+        run: mv cpp/SnekkyP cpp/snekkyp
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: snekkyd-linux
-          path: cpp/snekkyd
+          name: snekkyp-linux
+          path: cpp/snekkyp
   windows:
     runs-on: windows-latest
     steps:
@@ -37,13 +37,13 @@ jobs:
       - name: Rename artifact
         run: | 
           cd cpp
-          ren SnekkyD.exe snekkyd.exe
+          ren SnekkyP.exe snekkyp.exe
           cd ..
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: snekkyd-win
-          path: cpp/snekkyd.exe
+          name: snekkyp-win
+          path: cpp/snekkyp.exe
   macos:
     runs-on: macos-latest
     steps:
@@ -57,12 +57,12 @@ jobs:
       - name: Build
         run: haxe build.hxml
       - name: Rename artifact
-        run: mv cpp/SnekkyD cpp/snekkyd
+        run: mv cpp/SnekkyP cpp/snekkyp
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: snekkyd-macos
-          path: cpp/snekkyd
+          name: snekkyp-macos
+          path: cpp/snekkyp
   javascript:
     runs-on: ubuntu-latest
     steps:
@@ -78,5 +78,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: snekkyd-js
-          path: js/snekkyd.js
+          name: snekkyp-js
+          path: js/snekkyp.js

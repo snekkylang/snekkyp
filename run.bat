@@ -1,1 +1,1 @@
-haxe -cp src --main SnekkyD --run SnekkyD input.bite --debug
+haxe -cp src --main SnekkyP --run SnekkyP input.bite --debug
