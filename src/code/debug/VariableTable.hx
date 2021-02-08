@@ -2,7 +2,7 @@ package code.debug;
 
 import haxe.io.BytesInput;
 
-private typedef VariableEntry = {start:Int, end:Int, name:String};
+private typedef VariableEntry = {index:Int, start:Int, end:Int, name:String};
 
 class VariableTable {
 
@@ -10,27 +10,14 @@ class VariableTable {
 
     public function new() {}
 
-    public function define(start:Int, end:Int, name:String) {
-        table.push({start: start, end: end, name: name});
-    }
-
-    public function resolve(byteIndex:Int) {
-        var prev:VariableEntry = null;
-
+    public function resolveIndex(index:Int) {
         for (entry in table) {
-            if (entry.start < byteIndex && entry.end >= byteIndex) {
-                if (prev == null) {
-                    prev = entry;
-                    continue;
-                }
-
-                if (entry.start >= prev.start && entry.end <= prev.end) {
-                    prev = entry;
-                }
+            if (entry.index == index) {
+                return entry.name;
             }
         }
 
-        return prev == null ? null : prev.name;
+        return 'var$index';
     }
 
     public function fromByteCode(byteCode:BytesInput):VariableTable {
@@ -38,12 +25,13 @@ class VariableTable {
         final startPosition = byteCode.position;
 
         while (byteCode.position < startPosition + tableSize) {
+            final index = byteCode.readInt32();
             final start = byteCode.readInt32();
             final end = byteCode.readInt32();
             final nameLength = byteCode.readInt32();
             final name = byteCode.readString(nameLength);
 
-            table.push({start: start, end: end, name: name});
+            table.push({index: index, start: start, end: end, name: name});
         }
 
         return this;

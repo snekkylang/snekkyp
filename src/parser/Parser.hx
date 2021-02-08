@@ -21,7 +21,6 @@ class Parser {
     final constantPool:Array<Object>;
     final instructions:BytesInput;
     final parsedInstructions:Array<Instruction> = [];
-    final variableNames:Array<String> = [];
     final fileInfo:Array<String> = [];
 
     public function new(fileData:Bytes, debug:Bool) {
@@ -120,23 +119,20 @@ class Parser {
             case OpCode.Modulo: new ModuloIns(position);
             case OpCode.Equals: new EqualsIns(position);
             case OpCode.LessThan: new LessThanIns(position);
+            case OpCode.LessThanOrEqual: new LessThanOrEqualIns(position);
             case OpCode.GreaterThan: new GreaterThanIns(position);
+            case OpCode.GreaterThanOrEqual: new GreaterThanOrEqualIns(position);
             case OpCode.Negate: new NegateIns(position);
             case OpCode.Not: new NotIns(position);
             case OpCode.ConcatString: new ConcatStringIns(position);
             case OpCode.Load:
                 final index = instructions.readInt32();
-                final name = variableNames[index];
+                final name = variableTable.resolveIndex(index);
 
                 new LoadIns(index, name, position);
             case OpCode.Store:
                 final index = instructions.readInt32();
-                var name = variableTable.resolve(instructions.position);
-                if (name == null) {
-                    name = "<internal>";
-                }
-
-                variableNames[index] = name;
+                var name = variableTable.resolveIndex(index);
 
                 new StoreIns(index, name, position);
             case OpCode.LoadBuiltIn:
@@ -159,6 +155,7 @@ class Parser {
                 new HashIns(size, position);
             case OpCode.LoadIndex: new LoadIndexIns(position);
             case OpCode.StoreIndex: new StoreIndexIns(position);
+            case OpCode.Duplicate: new DuplicateIns(position);
             default: trace('Unknown OpCode `$opCode`'); new Instruction("unknown", position);
         }
 
