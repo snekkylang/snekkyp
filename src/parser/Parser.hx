@@ -155,7 +155,6 @@ class Parser {
                 new HashIns(size, position);
             case OpCode.LoadIndex: new LoadIndexIns(position);
             case OpCode.StoreIndex: new StoreIndexIns(position);
-            case OpCode.Duplicate: new DuplicateIns(position);
             default: trace('Unknown OpCode `$opCode`'); new Instruction("unknown", position);
         }
 
