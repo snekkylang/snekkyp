@@ -11,6 +11,7 @@ class BuiltInTable {
         "Regex",
         "Json",
         "Io",
+        "String",
         "File",
         "Http",
         "Thread",
