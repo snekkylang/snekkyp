@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class LoadIndexIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("LoadIndex", byteIndex);
+    public function new(info:Info) {
+        super("LoadIndex", info);
     }
 }

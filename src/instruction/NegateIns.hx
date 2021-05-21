@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class NegateIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("Negate", byteIndex);
+    public function new(info:Info) {
+        super("Negate", info);
     }
 }

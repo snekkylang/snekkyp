@@ -15,13 +15,12 @@ import haxe.io.BytesInput;
 class Parser {
 
     final debug:Bool;
-    final filenameTable:FilenameTable;
+    final fileNameTable:FilenameTable;
     final lineNumberTable:LineNumberTable;
     final variableTable:VariableTable;
     final constantPool:Array<Object>;
     final instructions:BytesInput;
     final parsedInstructions:Array<Instruction> = [];
-    final fileInfo:Array<String> = [];
 
     public function new(fileData:Bytes, debug:Bool) {
         final fileData = new BytesInput(fileData);
@@ -30,7 +29,7 @@ class Parser {
         } else {
             new BytesInput(fileData.readAll());
         }
-        filenameTable = new FilenameTable().fromByteCode(byteCode);
+        fileNameTable = new FilenameTable().fromByteCode(byteCode);
         lineNumberTable = new LineNumberTable().fromByteCode(byteCode);
         variableTable = new VariableTable().fromByteCode(byteCode);
         constantPool = ConstantPool.fromByteCode(byteCode);
@@ -43,29 +42,52 @@ class Parser {
         while (instructions.position < instructions.length) {
             parseInstruction();
         }
+    }
+
+    public function print() {
+        for (ins in getInstructionsAsStrings()) {
+            println(ins);
+        }
+    }
+
+    public function getInstructionsAsStrings(fileName:String = null) {
+        final instructionStrings:Array<String> = [];
 
         final insCountMaxLength = Std.string(parsedInstructions.length).length;
         final posCountMaxLength = Std.string(instructions.length).length;
         var fileInfoMaxLength = 0;
-        for (s in fileInfo) {
-            if (s.length > fileInfoMaxLength) {
-                fileInfoMaxLength = s.length;
+
+        if (debug) {
+            for (ins in parsedInstructions) {
+                if (fileName != null && ins.info.fileName != fileName) {
+                    continue;
+                }
+
+                if (ins.info.fileName.length > fileInfoMaxLength) {
+                    fileInfoMaxLength = ins.info.fileName.length;
+                }
             }
         }
 
         for (i => ins in parsedInstructions) {
+            if (fileName != null && ins.info.fileName != fileName) {
+                continue;
+            }
+
             final insCount = StringTools.lpad(Std.string(i), "0", insCountMaxLength);
             final info = new StringBuf();
             info.add(insCount);
             info.add(" | ");
-            info.add(StringTools.lpad(Std.string(ins.bytePosition), "0", posCountMaxLength));
+            info.add(StringTools.lpad(Std.string(ins.info.bytePosition), "0", posCountMaxLength));
             info.add(" | ");
             if (debug) {
-                info.add(StringTools.rpad(fileInfo[i], " ", fileInfoMaxLength));
+                info.add(StringTools.rpad(ins.info.fileName, " ", fileInfoMaxLength));
                 info.add(" | ");
             }
-            println('$info$ins');
+            instructionStrings.push('$info$ins');
         }
+
+        return instructionStrings;
     }
 
     inline function println(message:String) {
@@ -77,85 +99,86 @@ class Parser {
     }
 
     function parseInstruction() {
-        final position = instructions.position;
         final opCode = instructions.readByte();
 
-        if (debug) {
-            final position = lineNumberTable.resolve(instructions.position);
-            final filename = filenameTable.resolve(instructions.position);
-            fileInfo.push('$filename:${position.line}:${position.linePos + 1}');
-        }
+        final lineInfo = lineNumberTable.resolve(instructions.position);
+        final info = {
+            bytePosition: instructions.position,
+            fileName: fileNameTable.resolve(instructions.position),
+            line: lineInfo.line,
+            linePos: lineInfo.linePos
+        };
 
         final instruction = switch (opCode) {
             case OpCode.Constant:
                 final index = instructions.readInt32();
                 final value = constantPool[index];
 
-                new ConstantIns(index, value, position);
+                new ConstantIns(index, value, info);
             case OpCode.Pop:
-                new PopIns(position);
+                new PopIns(info);
             case OpCode.Jump:
                 final index = instructions.readInt32();
 
-                new JumpIns(index, position);
+                new JumpIns(index, info);
             case OpCode.JumpNot:
                 final index = instructions.readInt32();
 
-                new JumpNotIns(index, position);
+                new JumpNotIns(index, info);
             case OpCode.JumpPeek:
                 final index = instructions.readInt32();
 
-                new JumpPeekIns(index, position);
-            case OpCode.Add: new AddIns(position);
-            case OpCode.Subtract: new SubtractIns(position);
-            case OpCode.Multiply: new MultiplyIns(position);
-            case OpCode.Divide: new DivideIns(position);
-            case OpCode.BitAnd: new BitAndIns(position);
-            case OpCode.BitOr: new BitOrIns(position);
-            case OpCode.BitXor: new BitXorIns(position);
-            case OpCode.BitShiftLeft: new BitShiftLeftIns(position);
-            case OpCode.BitShiftRight: new BitShiftRightIns(position);
-            case OpCode.BitNot: new BitNotIns(position);
-            case OpCode.Modulo: new ModuloIns(position);
-            case OpCode.Equals: new EqualsIns(position);
-            case OpCode.LessThan: new LessThanIns(position);
-            case OpCode.LessThanOrEqual: new LessThanOrEqualIns(position);
-            case OpCode.GreaterThan: new GreaterThanIns(position);
-            case OpCode.GreaterThanOrEqual: new GreaterThanOrEqualIns(position);
-            case OpCode.Negate: new NegateIns(position);
-            case OpCode.Not: new NotIns(position);
-            case OpCode.ConcatString: new ConcatStringIns(position);
+                new JumpPeekIns(index, info);
+            case OpCode.Add: new AddIns(info);
+            case OpCode.Subtract: new SubtractIns(info);
+            case OpCode.Multiply: new MultiplyIns(info);
+            case OpCode.Divide: new DivideIns(info);
+            case OpCode.BitAnd: new BitAndIns(info);
+            case OpCode.BitOr: new BitOrIns(info);
+            case OpCode.BitXor: new BitXorIns(info);
+            case OpCode.BitShiftLeft: new BitShiftLeftIns(info);
+            case OpCode.BitShiftRight: new BitShiftRightIns(info);
+            case OpCode.BitNot: new BitNotIns(info);
+            case OpCode.Modulo: new ModuloIns(info);
+            case OpCode.Equals: new EqualsIns(info);
+            case OpCode.LessThan: new LessThanIns(info);
+            case OpCode.LessThanOrEqual: new LessThanOrEqualIns(info);
+            case OpCode.GreaterThan: new GreaterThanIns(info);
+            case OpCode.GreaterThanOrEqual: new GreaterThanOrEqualIns(info);
+            case OpCode.Negate: new NegateIns(info);
+            case OpCode.Not: new NotIns(info);
+            case OpCode.ConcatString: new ConcatStringIns(info);
             case OpCode.Load:
                 final index = instructions.readInt32();
                 final name = variableTable.resolveIndex(index);
 
-                new LoadIns(index, name, position);
+                new LoadIns(index, name, info);
             case OpCode.Store:
                 final index = instructions.readInt32();
                 var name = variableTable.resolveIndex(index);
 
-                new StoreIns(index, name, position);
+                new StoreIns(index, name, info);
             case OpCode.LoadBuiltIn:
                 final index = instructions.readInt32();
                 final name = BuiltInTable.resolveName(index);
 
-                new LoadBuiltInIns(index, name, position);
+                new LoadBuiltInIns(index, name, info);
             case OpCode.Call:
                 final parametersCount = instructions.readInt32();
 
-                new CallIns(parametersCount, position);
-            case OpCode.Return: new ReturnIns(position);
+                new CallIns(parametersCount, info);
+            case OpCode.Return: new ReturnIns(info);
             case OpCode.Array:
                 final size = instructions.readInt32();
 
-                new ArrayIns(size, position);
+                new ArrayIns(size, info);
             case OpCode.Hash:
                 final size = instructions.readInt32();
 
-                new HashIns(size, position);
-            case OpCode.LoadIndex: new LoadIndexIns(position);
-            case OpCode.StoreIndex: new StoreIndexIns(position);
-            default: trace('Unknown OpCode `$opCode`'); new Instruction("unknown", position);
+                new HashIns(size, info);
+            case OpCode.LoadIndex: new LoadIndexIns(info);
+            case OpCode.StoreIndex: new StoreIndexIns(info);
+            default: trace('Unknown OpCode `$opCode`'); new Instruction("unknown", info);
         }
 
         parsedInstructions.push(instruction);

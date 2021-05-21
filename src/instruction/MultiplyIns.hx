@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class MultiplyIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("Multiply", byteIndex);
+    public function new(info:Info) {
+        super("Multiply", info);
     }
 }

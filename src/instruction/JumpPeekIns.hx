@@ -1,11 +1,13 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class JumpPeekIns extends Instruction {
 
     public final index:Int;
 
-    public function new(index:Int, byteIndex:Int) {
-        super("JumpPeek", byteIndex);
+    public function new(index:Int, info:Info) {
+        super("JumpPeek", info);
 
         this.index = index;
     }

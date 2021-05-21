@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class ModuloIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("Modulo", byteIndex);
+    public function new(info:Info) {
+        super("Modulo", info);
     }
 }

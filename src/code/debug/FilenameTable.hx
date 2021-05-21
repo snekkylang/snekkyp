@@ -2,7 +2,7 @@ package code.debug;
 
 import haxe.io.BytesInput;
 
-private typedef FilenameEntry = {start:Int, end:Int, filename:String};
+private typedef FilenameEntry = {start:Int, end:Int, fileName:String};
 
 class FilenameTable {
 
@@ -10,8 +10,8 @@ class FilenameTable {
 
     public function new() {}
 
-    public function define(start:Int, end:Int, filename:String) {
-        table.push({start: start, end: end, filename: filename});
+    public function define(start:Int, end:Int, fileName:String) {
+        table.push({start: start, end: end, fileName: fileName});
     }
 
     public function resolve(byteIndex:Int):String {
@@ -30,7 +30,7 @@ class FilenameTable {
             }
         }
 
-        return prev == null ? null : prev.filename;
+        return prev == null ? null : prev.fileName;
     }
 
     public function fromByteCode(byteCode:BytesInput):FilenameTable {
@@ -40,10 +40,10 @@ class FilenameTable {
         while (byteCode.position < startPosition + tableSize) {
             final start = byteCode.readInt32();
             final end = byteCode.readInt32();
-            final filenameLength = byteCode.readInt32();
-            final filename = byteCode.readString(filenameLength);
+            final fileNameLength = byteCode.readInt32();
+            final fileName = byteCode.readString(fileNameLength);
 
-            table.push({start: start, end: end, filename: filename});
+            table.push({start: start, end: end, fileName: fileName});
         }
 
         return this;

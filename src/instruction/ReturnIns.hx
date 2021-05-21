@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class ReturnIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("Return", byteIndex);
+    public function new(info:Info) {
+        super("Return", info);
     }
 }

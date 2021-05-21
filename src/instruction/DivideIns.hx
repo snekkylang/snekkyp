@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class DivideIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("Divide", byteIndex);
+    public function new(info:Info) {
+        super("Divide", info);
     }
 }

@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class GreaterThanIns extends Instruction {
 
-    public function new(byteIndex:Int) {
-        super("GreaterThan", byteIndex);
+    public function new(info:Info) {
+        super("GreaterThan", info);
     }
 }

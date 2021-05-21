@@ -1,11 +1,13 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class JumpNotIns extends Instruction {
 
     public final index:Int;
 
-    public function new(index:Int, byteIndex:Int) {
-        super("JumpNot", byteIndex);
+    public function new(index:Int, info:Info) {
+        super("JumpNot", info);
 
         this.index = index;
     }

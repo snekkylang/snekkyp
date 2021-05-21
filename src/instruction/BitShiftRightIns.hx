@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class BitShiftRightIns extends Instruction {
 
-    public function new(bytePosition:Int) {
-        super("BitShiftRight", bytePosition);
+    public function new(info:Info) {
+        super("BitShiftRight", info);
     }
 }

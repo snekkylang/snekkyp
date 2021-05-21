@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class BitXorIns extends Instruction {
 
-    public function new(bytePosition:Int) {
-        super("BitXor", bytePosition);
+    public function new(info:Info) {
+        super("BitXor", info);
     }
 }

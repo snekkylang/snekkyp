@@ -1,8 +1,10 @@
 package instruction;
 
+import instruction.Instruction.Info;
+
 class AddIns extends Instruction {
 
-    public function new(bytePosition:Int) {
-        super("Add", bytePosition);
+    public function new(info:Info) {
+        super("Add", info);
     }
 }
