@@ -50,30 +50,28 @@ class Parser {
         }
     }
 
+    public function getInstructions(fileName:String = null) {
+        return parsedInstructions.filter(ins -> fileName == null || ins.info.fileName == fileName);
+    }
+
     public function getInstructionsAsStrings(fileName:String = null) {
+        final relevantInstructions = getInstructions(fileName);
+
         final instructionStrings:Array<String> = [];
 
-        final insCountMaxLength = Std.string(parsedInstructions.length).length;
+        final insCountMaxLength = Std.string(relevantInstructions.length).length;
         final posCountMaxLength = Std.string(instructions.length).length;
         var fileInfoMaxLength = 0;
 
         if (debug) {
-            for (ins in parsedInstructions) {
-                if (fileName != null && ins.info.fileName != fileName) {
-                    continue;
-                }
-
+            for (ins in relevantInstructions) {
                 if (ins.info.fileName.length > fileInfoMaxLength) {
                     fileInfoMaxLength = ins.info.fileName.length;
                 }
             }
         }
 
-        for (i => ins in parsedInstructions) {
-            if (fileName != null && ins.info.fileName != fileName) {
-                continue;
-            }
-
+        for (i => ins in relevantInstructions) {
             final insCount = StringTools.lpad(Std.string(i), "0", insCountMaxLength);
             final info = new StringBuf();
             info.add(insCount);
