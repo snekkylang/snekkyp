@@ -15,6 +15,6 @@ class StoreIns extends Instruction {
     }
 
     override function toString():String {
-        return '$mnemonic {index: $index, name: $name}';
+        return '$mnemonic {index: $index} :: {name: $name}';
     }
 }

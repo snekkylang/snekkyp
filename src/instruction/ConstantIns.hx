@@ -16,6 +16,6 @@ class ConstantIns extends Instruction {
     }
 
     override function toString():String {
-        return '$mnemonic {index: $index, value: $value}';
+        return '$mnemonic {index: $index} :: {value: $value}';
     }
 }
