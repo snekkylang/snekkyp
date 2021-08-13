@@ -97,8 +97,6 @@ class Parser {
     }
 
     function parseInstruction() {
-        final opCode = instructions.readByte();
-
         final lineInfo = lineNumberTable.resolve(instructions.position);
         final info = {
             bytePosition: instructions.position,
@@ -106,6 +104,8 @@ class Parser {
             line: lineInfo.line,
             linePos: lineInfo.linePos
         };
+
+        final opCode = instructions.readByte();
 
         final instruction = switch (opCode) {
             case OpCode.Constant:
