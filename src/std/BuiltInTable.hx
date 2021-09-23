@@ -12,9 +12,9 @@ class BuiltInTable {
         "Json",
         "Io",
         "String",
+        "Event",
         "File",
         "Http",
-        "Thread",
         "Net"
     ]; 
 
