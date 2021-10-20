@@ -12,7 +12,7 @@ class BuiltInTable {
         "Json",
         "Io",
         "String",
-        "Event",
+        "EventLoop",
         "File",
         "Http",
         "Net"
