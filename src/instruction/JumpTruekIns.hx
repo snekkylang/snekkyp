@@ -2,12 +2,12 @@ package instruction;
 
 import instruction.Instruction.Info;
 
-class JumpPeekIns extends Instruction {
+class JumpTrueIns extends Instruction {
 
     public final index:Int;
 
     public function new(index:Int, info:Info) {
-        super("JumpPeek", info);
+        super("JumpTrue", info);
 
         this.index = index;
     }

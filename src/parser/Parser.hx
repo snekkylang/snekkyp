@@ -1,5 +1,6 @@
 package parser;
 
+import instruction.JumpTruekIns.JumpTrueIns;
 import std.BuiltInTable;
 import instruction.*;
 import code.OpCode;
@@ -119,14 +120,14 @@ class Parser {
                 final index = instructions.readInt32();
 
                 new JumpIns(index, info);
-            case OpCode.JumpNot:
+            case OpCode.JumpFalse:
                 final index = instructions.readInt32();
 
-                new JumpNotIns(index, info);
-            case OpCode.JumpPeek:
+                new JumpFalseIns(index, info);
+            case OpCode.JumpTrue:
                 final index = instructions.readInt32();
 
-                new JumpPeekIns(index, info);
+                new JumpTrueIns(index, info);
             case OpCode.Add: new AddIns(info);
             case OpCode.Subtract: new SubtractIns(info);
             case OpCode.Multiply: new MultiplyIns(info);
@@ -139,6 +140,7 @@ class Parser {
             case OpCode.BitNot: new BitNotIns(info);
             case OpCode.Modulo: new ModuloIns(info);
             case OpCode.Equals: new EqualsIns(info);
+            case OpCode.NotEquals: new NotEqualsIns(info);
             case OpCode.LessThan: new LessThanIns(info);
             case OpCode.LessThanOrEqual: new LessThanOrEqualIns(info);
             case OpCode.GreaterThan: new GreaterThanIns(info);
