@@ -25,6 +25,16 @@ class Parser {
 
     public function new(fileData:Bytes, debug:Bool) {
         final fileData = new BytesInput(fileData);
+        final magicNumber = fileData.readString(4);
+        if (magicNumber != "SNEK") {
+            #if js
+            js.Browser.console.log("Error: Snekky magic number not found!");
+            throw "invalid file";
+            #else
+            Sys.println("Error: Snekky magic number not found!");
+            Sys.exit(1);
+            #end
+        }
         final byteCode = if (fileData.readByte() == 1) {
             new BytesInput(Uncompress.run(fileData.readAll()));
         } else {
